@@ -46,7 +46,7 @@ Answer clearly, and mention which file(s) your answer is based on.
 
     # 5. Call the LLM to generate the answer
     llm = ChatGoogleGenerativeAI(
-        model="gemini-1.5-pro", # Used gemini-1.5-pro for better code reasoning (gemini-1.5-flash is also fine)
+        model="gemini-2.5-flash", # Using flash as it is fast and broadly supported on all API keys
         google_api_key=settings.GEMINI_API_KEY
     )
     
