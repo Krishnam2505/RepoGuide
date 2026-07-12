@@ -1,0 +1,5 @@
+chroma_store/
+cloned_repos/
+__pycache__/
+*.pyc
+.env
