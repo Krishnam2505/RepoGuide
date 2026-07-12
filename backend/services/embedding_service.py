@@ -4,8 +4,7 @@ from config import settings
 def get_embedding_function():
     """
     Returns a configured GoogleGenerativeAIEmbeddings instance using the Gemini API.
-    This offloads the ML processing to Google's servers, saving hundreds of MBs of RAM
-    and allowing the application to run smoothly on free-tier hosting platforms.
+    This offloads the ML processing to Google, requiring virtually 0 MB of RAM on our server!
     """
     return GoogleGenerativeAIEmbeddings(
         model="models/embedding-001",
