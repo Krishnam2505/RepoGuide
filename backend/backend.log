@@ -45,3 +45,33 @@ INFO:     127.0.0.1:50594 - "POST /api/chat HTTP/1.1" 200 OK
 INFO:     127.0.0.1:50597 - "OPTIONS /api/chat HTTP/1.1" 200 OK
 Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 5190.47it/s]
 INFO:     127.0.0.1:50597 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50674 - "OPTIONS /api/repo/ingest HTTP/1.1" 200 OK
+--- Starting Ingest for: https://github.com/jonschlinkert/is-number ---
+Step 1: Cloning repository to jonschlinkert_is-number...
+Step 2: Walking repository files...
+Step 3: Chunking 9 files...
+Step 4: Embedding and storing 32 chunks in ChromaDB (this may take a moment)...
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 5416.82it/s]
+--- Ingest Complete! ---
+INFO:     127.0.0.1:50674 - "POST /api/repo/ingest HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50674 - "GET /api/repo/jonschlinkert_is-number/files HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50674 - "GET /api/repo/jonschlinkert_is-number/files HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50675 - "GET /api/repo/jonschlinkert_is-number/files HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50675 - "GET /api/repo/jonschlinkert_is-number/files HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50718 - "GET /api/repo/jonschlinkert_is-number/file-content?path=.eslintrc.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50720 - "GET /api/repo/jonschlinkert_is-number/file-content?path=benchmark%2Ffixtures.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50722 - "GET /api/repo/jonschlinkert_is-number/file-content?path=.eslintrc.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50733 - "GET /api/repo/jonschlinkert_is-number/file-content?path=.verb.md HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50733 - "GET /api/repo/jonschlinkert_is-number/file-content?path=README.md HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50733 - "GET /api/repo/jonschlinkert_is-number/file-content?path=.verb.md HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50733 - "GET /api/repo/jonschlinkert_is-number/file-content?path=.eslintrc.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50733 - "GET /api/repo/jonschlinkert_is-number/file-content?path=.verb.md HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50733 - "GET /api/repo/jonschlinkert_is-number/file-content?path=README.md HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50733 - "GET /api/repo/jonschlinkert_is-number/file-content?path=benchmark%2Ffixtures.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50733 - "GET /api/repo/jonschlinkert_is-number/file-content?path=benchmark%2Findex.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50744 - "GET /api/repo/jonschlinkert_is-number/file-content?path=.eslintrc.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50768 - "GET /api/repo/jonschlinkert_is-number/file-content?path=.eslintrc.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50778 - "GET /api/repo/jonschlinkert_is-number/file-content?path=.eslintrc.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50777 - "GET /api/repo/jonschlinkert_is-number/files HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50778 - "GET /api/repo/jonschlinkert_is-number/file-content?path=.eslintrc.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50777 - "GET /api/repo/jonschlinkert_is-number/files HTTP/1.1" 200 OK

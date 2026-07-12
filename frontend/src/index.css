@@ -1,16 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
 
 :root {
-  --bg-dark: #050510;
-  --bg-mesh-1: rgba(90, 30, 200, 0.4);
-  --bg-mesh-2: rgba(30, 140, 200, 0.4);
-  --glass-bg: rgba(20, 20, 30, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --text-main: #f0f0f5;
-  --text-muted: #9ba1b0;
-  --accent-color: #6366f1;
-  --accent-hover: #4f46e5;
-  --error-color: #ef4444;
+  /* Developer Tool Theme (Similar to GitHub Dark / VS Code) */
+  --bg-dark: #0d1117;
+  --panel-bg: #161b22;
+  --panel-border: #30363d;
+  --text-main: #c9d1d9;
+  --text-muted: #8b949e;
+  --accent-color: #2f81f7;
+  --accent-hover: #388bfd;
+  --error-color: #f85149;
+  --success-color: #2ea043;
 }
 
 * {
@@ -22,91 +22,63 @@
 
 body {
   background-color: var(--bg-dark);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
   color: var(--text-main);
   min-height: 100vh;
-  overflow: hidden; /* We'll handle scrolling in panels */
+  overflow: hidden; /* Handled inside panels */
   position: relative;
 }
 
 /* 
-  DYNAMIC MESH BACKGROUND
-  These pseudo-elements create massive colored orbs that slowly rotate in the background.
-*/
-body::before, body::after {
-  content: '';
-  position: absolute;
-  width: 80vw;
-  height: 80vw;
-  border-radius: 50%;
-  filter: blur(120px);
-  z-index: -1;
-  animation: float 20s infinite alternate ease-in-out;
-  opacity: 0.6;
-}
-
-body::before {
-  background: var(--bg-mesh-1);
-  top: -20%;
-  left: -10%;
-}
-
-body::after {
-  background: var(--bg-mesh-2);
-  bottom: -20%;
-  right: -10%;
-  animation-duration: 25s;
-  animation-direction: alternate-reverse;
-}
-
-@keyframes float {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(10%, 15%) scale(1.1); }
-}
-
-/* 
-  GLASSMORPHISM UTILITIES 
-  Apply .glass-panel to any div to make it look like frosted glass.
+  SLEEK DEVELOPER PANEL
+  Replaces the old "glass-panel" with a solid, clean container
 */
 .glass-panel {
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  /* Optional: keeps existing Framer Motion animations smooth */
+  will-change: transform, opacity;
 }
 
-/* CUSTOM SCROLLBARS FOR GLASS PANELS */
+/* SCROLLBARS */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 10px;
+  background: #484f58;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: #6e7681;
 }
 
 /* Base button styling */
 .btn-primary {
   background: var(--accent-color);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
+  color: #ffffff;
+  border: 1px solid rgba(240, 246, 252, 0.1);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  font-size: 14px;
 }
 .btn-primary:hover {
   background: var(--accent-hover);
-  transform: translateY(-1px);
 }
 .btn-primary:active {
-  transform: translateY(1px);
+  transform: scale(0.98);
+}
+
+/* Typography elements */
+pre, code {
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
 }

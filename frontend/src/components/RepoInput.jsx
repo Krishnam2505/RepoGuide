@@ -49,9 +49,13 @@ export default function RepoInput() {
         zIndex: 10
       }}
     >
-      <h1 style={{ fontSize: '2.5rem', fontWeight: '700', marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
+      <h1 style={{ fontSize: '3rem', fontWeight: '800', marginBottom: '0.5rem', letterSpacing: '-0.03em' }}>
         Repo<span style={{ color: 'var(--accent-color)' }}>Guide</span>
       </h1>
+      
+      <p style={{ color: 'var(--text-muted)', marginBottom: '2.5rem', fontSize: '1.1rem', maxWidth: '500px', textAlign: 'center', lineHeight: '1.5' }}>
+        Paste any public GitHub repository to instantly search, browse, and chat with the codebase using AI.
+      </p>
       
       <form 
         onSubmit={handleIngest} 
@@ -112,16 +116,30 @@ export default function RepoInput() {
         </button>
       </form>
       
-      {/* Simple inline style for the spinner animation */}
       <style>{`
         @keyframes spin { 100% { transform: rotate(360deg); } }
+        .example-tag {
+          background: var(--panel-bg);
+          border: 1px solid var(--panel-border);
+          color: var(--text-muted);
+          padding: 6px 12px;
+          border-radius: 16px;
+          font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        .example-tag:hover {
+          color: var(--text-main);
+          border-color: var(--accent-color);
+          background: rgba(47, 129, 247, 0.1);
+        }
       `}</style>
       
       {error && (
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          style={{ color: 'var(--error-color)', marginTop: '1rem', fontSize: '0.9rem' }}
+          style={{ color: 'var(--error-color)', marginTop: '1.5rem', fontSize: '0.9rem' }}
         >
           {error}
         </motion.div>
@@ -131,9 +149,27 @@ export default function RepoInput() {
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          style={{ color: 'var(--text-muted)', marginTop: '1rem', fontSize: '0.9rem' }}
+          style={{ color: 'var(--accent-color)', marginTop: '1.5rem', fontSize: '0.9rem', fontWeight: '500' }}
         >
           {ingestStatus}
+        </motion.div>
+      )}
+
+      {!isIngesting && !error && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          style={{ marginTop: '2.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}
+        >
+          <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: '600' }}>
+            Try an example
+          </span>
+          <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <button className="example-tag" onClick={() => setUrl('https://github.com/facebook/react')}>facebook/react</button>
+            <button className="example-tag" onClick={() => setUrl('https://github.com/vuejs/core')}>vuejs/core</button>
+            <button className="example-tag" onClick={() => setUrl('https://github.com/fastapi/fastapi')}>fastapi/fastapi</button>
+          </div>
         </motion.div>
       )}
     </motion.div>
