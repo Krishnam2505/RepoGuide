@@ -8,3 +8,4 @@ chromadb
 gitpython
 pydantic
 python-multipart
+sentence-transformers
