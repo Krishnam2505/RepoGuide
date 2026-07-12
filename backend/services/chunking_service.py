@@ -1,4 +1,4 @@
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from utils.file_utils import read_file_safe
 
 def chunk_repo_files(files: list[dict]) -> list[dict]:

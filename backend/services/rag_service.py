@@ -10,12 +10,11 @@ def answer_question(repo_name: str, question: str, chat_history: list[dict] = No
     # 1. Load the existing vector database for this specific repository
     vectorstore = load_vectorstore(repo_name)
     
-    # 2. Retrieve the top 5 most relevant chunks.
-    # Why k=5? If we retrieve too few chunks (k=1), the LLM might miss the actual relevant code
-    # because it was split across files. If we retrieve too many (k=20), the context becomes 
-    # incredibly noisy, the API call becomes much slower, and it costs more money. 
-    # 5 is a proven, reasonable starting point for an MVP.
-    relevant_chunks = vectorstore.similarity_search(question, k=5)
+    # 2. Retrieve the top chunks using MMR (Max Marginal Relevance).
+    # MMR (k=8, fetch_k=20) fetches 20 chunks that are semantically similar,
+    # and then optimizes to select 8 chunks that are both relevant AND diverse,
+    # preventing the context from being flooded with redundant code from the same file.
+    relevant_chunks = vectorstore.max_marginal_relevance_search(question, k=8, fetch_k=20)
     
     # 3. Build the context string
     # We prefix each chunk with its file path so the AI knows exactly what file it is looking at.
@@ -46,7 +45,7 @@ Answer clearly, and mention which file(s) your answer is based on.
 
     # 5. Call the LLM to generate the answer
     llm = ChatGoogleGenerativeAI(
-        model="gemini-2.5-flash", # Using flash as it is fast and broadly supported on all API keys
+        model="gemini-flash-latest", # Using latest alias to automatically route to the supported free-tier flash model
         google_api_key=settings.GEMINI_API_KEY
     )
     
@@ -57,7 +56,14 @@ Answer clearly, and mention which file(s) your answer is based on.
     # or they just forget to mention them in their prose even when explicitly told to. 
     # By returning the ground-truth sources from the retrieval step (the 'sources' list), 
     # the frontend UI can always show accurate citations regardless of what the LLM says in its paragraph.
+    # Handle the fact that gemini-flash-latest may return a list of parts instead of a string
+    answer_text = response.content
+    if isinstance(answer_text, list) and len(answer_text) > 0 and isinstance(answer_text[0], dict):
+        answer_text = answer_text[0].get("text", str(answer_text))
+    elif not isinstance(answer_text, str):
+        answer_text = str(answer_text)
+        
     return {
-        "answer": response.content,
+        "answer": answer_text,
         "sources": list(sources)
     }

@@ -1,16 +1,9 @@
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from config import settings
 
 def get_embedding_function():
     """
-    Returns a configured GoogleGenerativeAIEmbeddings instance using model
-    "models/embedding-001" and settings.GEMINI_API_KEY.
-    
-    This is passed into Chroma so Chroma can embed both stored chunks AND
-    incoming user queries with the exact same model. This is critical — mixing embedding
-    models between storage and query time makes similarity search meaningless.
+    Returns a configured HuggingFaceEmbeddings instance using a fast local model (all-MiniLM-L6-v2).
+    This completely bypasses all Gemini rate limits and is 100% free and unlimited.
     """
-    return GoogleGenerativeAIEmbeddings(
-        model="models/text-embedding-004",
-        google_api_key=settings.GEMINI_API_KEY
-    )
+    return HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")

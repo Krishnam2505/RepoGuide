@@ -4,6 +4,7 @@ import uvicorn
 from config import settings
 from routes import repo_routes, chat_routes, file_routes
 
+# Trigger uvicorn hot-reload
 app = FastAPI(title="CodeChat API")
 app.include_router(repo_routes.router)
 app.include_router(chat_routes.router)
@@ -12,8 +13,8 @@ app.include_router(file_routes.router)
 # Add CORS middleware allowing origin http://localhost:5173 with credentials
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
-    allow_credentials=True,
+    allow_origins=["*"], # Allow all origins so it works whether Vite is on 5173 or 5174
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )

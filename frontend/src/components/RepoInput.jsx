@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Github, Loader2 } from 'lucide-react';
+import { Search, Loader2 } from 'lucide-react';
 import api from '../api/axios';
 import { useRepo } from '../context/RepoContext';
 
 export default function RepoInput() {
   const [url, setUrl] = useState('');
   const [error, setError] = useState(null);
-  const { setCurrentRepo, isIngesting, setIsIngesting, setIngestStatus } = useRepo();
+  const { setCurrentRepo, isIngesting, setIsIngesting, ingestStatus, setIngestStatus } = useRepo();
 
   const handleIngest = async (e) => {
     e.preventDefault();
@@ -50,7 +50,7 @@ export default function RepoInput() {
       }}
     >
       <h1 style={{ fontSize: '2.5rem', fontWeight: '700', marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
-        Code<span style={{ color: 'var(--accent-color)' }}>Chat</span>
+        Repo<span style={{ color: 'var(--accent-color)' }}>Guide</span>
       </h1>
       
       <form 
@@ -68,7 +68,7 @@ export default function RepoInput() {
         }}
       >
         <div style={{ padding: '0 15px', color: 'var(--text-muted)' }}>
-          <Github size={20} />
+          <Search size={20} />
         </div>
         
         <input 

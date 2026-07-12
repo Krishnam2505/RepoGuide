@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, User, Bot, FileCode2, Loader2 } from 'lucide-react';
+import { Send, User, Bot, FileCode, Loader2 } from 'lucide-react';
 import api from '../api/axios';
 import { useRepo } from '../context/RepoContext';
 import ReactMarkdown from 'react-markdown';
@@ -93,7 +93,7 @@ function MessageBubble({ msg }) {
                 onMouseEnter={(e) => { e.currentTarget.style.color = 'white'; e.currentTarget.style.background = 'rgba(99, 102, 241, 0.2)'; e.currentTarget.style.borderColor = 'var(--accent-color)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}
               >
-                <FileCode2 size={12} />
+                <FileCode size={12} />
                 {src}
               </button>
             ))}

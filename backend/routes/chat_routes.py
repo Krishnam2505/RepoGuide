@@ -21,6 +21,8 @@ def chat_with_repo(request: ChatRequest):
             sources=result["sources"]
         )
     except ValueError as e:
+        import traceback
+        traceback.print_exc()
         # ValueError is specifically raised by Chroma if the directory doesn't exist
         # which means the user is trying to chat with a repo they haven't ingested yet.
         raise HTTPException(
@@ -28,6 +30,8 @@ def chat_with_repo(request: ChatRequest):
             detail="Repo not found. Please ingest it first via /api/repo/ingest"
         )
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         # Catch any other unexpected errors (like Gemini API timeouts)
         raise HTTPException(
             status_code=500,

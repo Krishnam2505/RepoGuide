@@ -1,11 +1,11 @@
 import os
-from langchain_community.vectorstores import Chroma
+from langchain_community.vectorstores import FAISS
 from services.embedding_service import get_embedding_function
 from config import settings
 
 def build_vectorstore(repo_name: str, chunks: list[dict]):
     """
-    Creates (or overwrites) a Chroma collection named after repo_name.
+    Creates (or overwrites) a FAISS index named after repo_name.
     Persist directory: os.path.join(settings.CHROMA_PERSIST_DIR, repo_name)
     """
     persist_directory = os.path.join(settings.CHROMA_PERSIST_DIR, repo_name)
@@ -13,33 +13,32 @@ def build_vectorstore(repo_name: str, chunks: list[dict]):
     
     texts = [c["text"] for c in chunks]
     metadatas = [c["metadata"] for c in chunks]
-    ids = [c["id"] for c in chunks]
+    # FAISS does not natively take string IDs in from_texts as easily as Chroma in older versions, 
+    # but we can pass them in the metadatas or rely on FAISS internal mapping.
     
-    # We persist the database to the local disk. 
-    # Why? If the FastAPI server restarts, repos that were already ingested 
-    # don't need to be re-cloned, re-chunked, and re-embedded. This saves 
-    # massive amounts of API costs and time. It acts as a caching layer.
-    vectorstore = Chroma.from_texts(
+    vectorstore = FAISS.from_texts(
         texts=texts,
-        metadatas=metadatas,
-        ids=ids,
         embedding=embedding,
-        persist_directory=persist_directory
+        metadatas=metadatas
     )
+    
+    # Save the FAISS index to disk
+    vectorstore.save_local(persist_directory)
     
     return vectorstore
 
 def load_vectorstore(repo_name: str):
     """
-    Loads an EXISTING Chroma collection for a repo that was already ingested
-    (so we don't have to re-embed on every single chat message — only on first ingest).
+    Loads an EXISTING FAISS index for a repo that was already ingested.
     """
     persist_directory = os.path.join(settings.CHROMA_PERSIST_DIR, repo_name)
     embedding = get_embedding_function()
     
-    vectorstore = Chroma(
-        persist_directory=persist_directory, 
-        embedding_function=embedding
+    # allow_dangerous_deserialization is required for FAISS in newer Langchain versions
+    vectorstore = FAISS.load_local(
+        folder_path=persist_directory, 
+        embeddings=embedding,
+        allow_dangerous_deserialization=True
     )
     
     return vectorstore

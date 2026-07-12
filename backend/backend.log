@@ -1,0 +1,47 @@
+INFO:     Will watch for changes in these directories: ['/Users/krishnamarora/Desktop/RepoGuide/backend']
+INFO:     Uvicorn running on http://127.0.0.1:8008 (Press CTRL+C to quit)
+INFO:     Started reloader process [26769] using StatReload
+INFO:     Started server process [26775]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 7144.97it/s]
+Traceback (most recent call last):
+  File "/Users/krishnamarora/Desktop/RepoGuide/backend/routes/chat_routes.py", line 19, in chat_with_repo
+    return ChatResponse(
+        answer=result["answer"],
+        sources=result["sources"]
+    )
+  File "/Users/krishnamarora/Desktop/RepoGuide/backend/venv/lib/python3.14/site-packages/pydantic/main.py", line 263, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+pydantic_core._pydantic_core.ValidationError: 1 validation error for ChatResponse
+answer
+  Input should be a valid string [type=string_type, input_value=[{'type': 'text', 'text':...4csIMfDRtRd5v8l6lNs='}}], input_type=list]
+    For further information visit https://errors.pydantic.dev/2.13/v/string_type
+INFO:     127.0.0.1:50554 - "POST /api/chat HTTP/1.1" 404 Not Found
+WARNING:  StatReload detected changes in 'services/rag_service.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [26775]
+INFO:     Started server process [26861]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 6668.42it/s]
+INFO:     127.0.0.1:50566 - "POST /api/chat HTTP/1.1" 200 OK
+--- Starting Ingest for: https://github.com/jonschlinkert/is-number ---
+Step 1: Cloning repository to jonschlinkert_is-number...
+Step 2: Walking repository files...
+Step 3: Chunking 9 files...
+Step 4: Embedding and storing 32 chunks in ChromaDB (this may take a moment)...
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 7595.44it/s]
+--- Ingest Complete! ---
+INFO:     127.0.0.1:50590 - "POST /api/repo/ingest HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50593 - "GET /api/repo/jonschlinkert_is-number/files HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50593 - "GET /api/repo/jonschlinkert_is-number/files HTTP/1.1" 200 OK
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 8050.64it/s]
+INFO:     127.0.0.1:50594 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50597 - "OPTIONS /api/chat HTTP/1.1" 200 OK
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 5190.47it/s]
+INFO:     127.0.0.1:50597 - "POST /api/chat HTTP/1.1" 200 OK

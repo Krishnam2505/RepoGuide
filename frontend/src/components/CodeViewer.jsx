@@ -13,7 +13,7 @@ import 'prismjs/components/prism-markdown';
 
 import { useRepo } from '../context/RepoContext';
 import api from '../api/axios';
-import { X, Code2 } from 'lucide-react';
+import { X, Code } from 'lucide-react';
 
 export default function CodeViewer() {
   const { currentRepo, activeFile, setActiveFile } = useRepo();
@@ -82,7 +82,7 @@ export default function CodeViewer() {
         background: 'rgba(0,0,0,0.2)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Code2 size={18} color="var(--accent-color)" />
+          <Code size={18} color="var(--accent-color)" />
           <span style={{ fontFamily: 'monospace', fontSize: '0.9rem', color: '#e2e8f0' }}>
             {activeFile}
           </span>
