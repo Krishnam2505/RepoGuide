@@ -11,6 +11,6 @@ def get_embedding_function():
     models between storage and query time makes similarity search meaningless.
     """
     return GoogleGenerativeAIEmbeddings(
-        model="models/embedding-001",
+        model="models/text-embedding-004",
         google_api_key=settings.GEMINI_API_KEY
     )
