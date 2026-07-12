@@ -1,9 +1,13 @@
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from config import settings
 
 def get_embedding_function():
     """
-    Returns a configured HuggingFaceEmbeddings instance using a fast local model (all-MiniLM-L6-v2).
-    This completely bypasses all Gemini rate limits and is 100% free and unlimited.
+    Returns a configured GoogleGenerativeAIEmbeddings instance using the Gemini API.
+    This offloads the ML processing to Google's servers, saving hundreds of MBs of RAM
+    and allowing the application to run smoothly on free-tier hosting platforms.
     """
-    return HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    return GoogleGenerativeAIEmbeddings(
+        model="models/embedding-001",
+        google_api_key=settings.GEMINI_API_KEY
+    )
