@@ -8,4 +8,5 @@ chromadb
 gitpython
 pydantic
 python-multipart
-sentence-transformers
+faiss-cpu
+langchain-huggingface
