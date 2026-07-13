@@ -206,13 +206,24 @@ export default function ChatPanel() {
       </div>
       
       <div style={{ padding: '1rem', borderTop: '1px solid var(--glass-border)' }}>
-        <form onSubmit={handleSend} style={{ display: 'flex', gap: '10px', background: 'rgba(0,0,0,0.3)', borderRadius: '100px', padding: '6px' }}>
-          <input 
-            type="text" 
+        <form onSubmit={handleSend} style={{ display: 'flex', gap: '10px', background: 'rgba(0,0,0,0.3)', borderRadius: '24px', padding: '6px', alignItems: 'flex-end' }}>
+          <textarea 
             value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask a question..."
+            onChange={(e) => {
+              setInput(e.target.value);
+              e.target.style.height = 'auto';
+              e.target.style.height = Math.min(e.target.scrollHeight, 120) + 'px';
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSend(e);
+                e.target.style.height = 'auto'; // Reset height after send
+              }
+            }}
+            placeholder="Ask a question... (Shift+Enter for new line)"
             disabled={loading}
+            rows={1}
             style={{
               flex: 1,
               background: 'transparent',
@@ -220,7 +231,12 @@ export default function ChatPanel() {
               color: 'white',
               outline: 'none',
               padding: '8px 12px',
-              fontSize: '0.95rem'
+              fontSize: '0.95rem',
+              resize: 'none',
+              minHeight: '20px',
+              maxHeight: '120px',
+              overflowY: 'auto',
+              fontFamily: 'inherit'
             }}
           />
           <button 
@@ -237,7 +253,9 @@ export default function ChatPanel() {
               alignItems: 'center',
               justifyContent: 'center',
               cursor: (!input.trim() || loading) ? 'not-allowed' : 'pointer',
-              transition: 'all 0.2s'
+              transition: 'all 0.2s',
+              flexShrink: 0,
+              marginBottom: '2px'
             }}
           >
             <Send size={16} />
