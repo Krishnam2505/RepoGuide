@@ -6,6 +6,7 @@ from services.chunking_service import chunk_repo_files
 from services.vectorstore_service import build_vectorstore
 from config import settings
 
+
 router = APIRouter()
 
 @router.post("/api/repo/ingest", response_model=IngestResponse)
@@ -33,14 +34,30 @@ def ingest_repo(request: IngestRequest):
     if len(files) == 0:
         raise HTTPException(status_code=400, detail="No supported source files found in this repo")
         
+    # Guardrail: Prioritize code files and cap at 40 files to stay within timeout and memory limits
+    MAX_FILES = 40
+    if len(files) > MAX_FILES:
+        code_exts = ('.py', '.js', '.jsx', '.ts', '.tsx', '.go', '.java', '.cpp', '.c')
+        files = sorted(files, key=lambda f: (0 if f["path"].endswith(code_exts) else 1))
+        files = files[:MAX_FILES]
+        
     # 4. Chunk the valid files
     print(f"Step 3: Chunking {len(files)} files...")
     chunks = chunk_repo_files(files)
     
+    # Guardrail: Cap chunks at 150 max to guarantee fast ingestion (<15s)
+    MAX_CHUNKS = 150
+    if len(chunks) > MAX_CHUNKS:
+        chunks = chunks[:MAX_CHUNKS]
+        
     # 5. Embed and store the chunks
-    print(f"Step 4: Embedding and storing {len(chunks)} chunks in ChromaDB (this may take a moment)...")
-    build_vectorstore(repo_name, chunks)
-    
+    print(f"Step 4: Embedding and storing {len(chunks)} chunks in FAISS (this may take a moment)...")
+    try:
+        build_vectorstore(repo_name, chunks)
+    except Exception as e:
+        print(f"Error during vectorstore build: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate embeddings: {str(e)}")
+        
     print("--- Ingest Complete! ---")
     
     # 6. Return the success response using our Pydantic schema
