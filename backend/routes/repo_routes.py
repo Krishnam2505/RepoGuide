@@ -45,8 +45,8 @@ def ingest_repo(request: IngestRequest):
     print(f"Step 3: Chunking {len(files)} files...")
     chunks = chunk_repo_files(files)
     
-    # Guardrail: Cap chunks at 60 max (embedded in 1 single Gemini batch API call)
-    MAX_CHUNKS = 60
+    # Guardrail: Cap chunks at 25 max so that even multiple ingests stay strictly within Gemini free quota (100/min)
+    MAX_CHUNKS = 25
     if len(chunks) > MAX_CHUNKS:
         chunks = chunks[:MAX_CHUNKS]
         
@@ -59,8 +59,14 @@ def ingest_repo(request: IngestRequest):
     try:
         build_vectorstore(repo_name, chunks)
     except Exception as e:
+        error_msg = str(e)
+        if "RESOURCE_EXHAUSTED" in error_msg or "429" in error_msg:
+            raise HTTPException(
+                status_code=429, 
+                detail="Gemini API rate limit reached (free tier allows 100 chunks/minute). Please wait 45 seconds and try again."
+            )
         print(f"Error during vectorstore build: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to generate embeddings: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate embeddings: {error_msg}")
         
     gc.collect()
     print("--- Ingest Complete! ---")
