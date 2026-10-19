@@ -8,4 +8,4 @@ gitpython
 pydantic
 python-multipart
 faiss-cpu
-fastembed
+

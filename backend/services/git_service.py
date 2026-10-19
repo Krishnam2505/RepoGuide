@@ -36,10 +36,13 @@ def clone_repo(repo_url: str) -> str:
         shutil.rmtree(target_path)
         
     try:
-        # depth=1 performs a "shallow clone". We only need the current files to read the code.
-        # We do not need the entire git history (thousands of commits), which would take far 
-        # longer to download and use way more disk space.
-        git.Repo.clone_from(repo_url, target_path, depth=1)
+        # depth=1 performs a shallow clone of only the default branch
+        git.Repo.clone_from(
+            repo_url, 
+            target_path, 
+            depth=1,
+            single_branch=True
+        )
     except GitCommandError as e:
         raise ValueError("Could not clone repo. Check the URL is a valid public GitHub repository.")
         

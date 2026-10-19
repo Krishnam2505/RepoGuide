@@ -34,8 +34,8 @@ def ingest_repo(request: IngestRequest):
     if len(files) == 0:
         raise HTTPException(status_code=400, detail="No supported source files found in this repo")
         
-    # Guardrail: Prioritize code files and cap at 40 files to stay within timeout and memory limits
-    MAX_FILES = 40
+    # Guardrail: Prioritize code files and cap at 25 files to stay safely within Render 512MB RAM
+    MAX_FILES = 25
     if len(files) > MAX_FILES:
         code_exts = ('.py', '.js', '.jsx', '.ts', '.tsx', '.go', '.java', '.cpp', '.c')
         files = sorted(files, key=lambda f: (0 if f["path"].endswith(code_exts) else 1))
@@ -45,10 +45,14 @@ def ingest_repo(request: IngestRequest):
     print(f"Step 3: Chunking {len(files)} files...")
     chunks = chunk_repo_files(files)
     
-    # Guardrail: Cap chunks at 150 max to guarantee fast ingestion (<15s)
-    MAX_CHUNKS = 150
+    # Guardrail: Cap chunks at 60 max (embedded in 1 single Gemini batch API call)
+    MAX_CHUNKS = 60
     if len(chunks) > MAX_CHUNKS:
         chunks = chunks[:MAX_CHUNKS]
+        
+    # Free temporary memory
+    import gc
+    gc.collect()
         
     # 5. Embed and store the chunks
     print(f"Step 4: Embedding and storing {len(chunks)} chunks in FAISS (this may take a moment)...")
@@ -58,6 +62,7 @@ def ingest_repo(request: IngestRequest):
         print(f"Error during vectorstore build: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to generate embeddings: {str(e)}")
         
+    gc.collect()
     print("--- Ingest Complete! ---")
     
     # 6. Return the success response using our Pydantic schema
